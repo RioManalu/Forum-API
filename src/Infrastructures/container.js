@@ -13,6 +13,8 @@ const UserRepository = require('../Domains/users/UserRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
+const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -20,9 +22,9 @@ const AuthenticationTokenManager = require('../Applications/security/Authenticat
 const JwtTokenManager = require('./security/JwtTokenManager');
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
 const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
-const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
+const ThreadUseCase = require('../Applications/use_case/ThreadUseCase');
 
 // creating container
 const container = createContainer();
@@ -75,7 +77,20 @@ container.register([
         },
       ],
     },
-  },
+  },{
+    key: ThreadRepositoryPostgres.name,
+    Class: ThreadRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        }
+      ]
+    }
+  }
 ]);
 
 // registering use cases
@@ -152,6 +167,19 @@ container.register([
       ],
     },
   },
+  {
+    key: ThreadUseCase.name,
+    Class: ThreadUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepositoryPostgres',
+          internal: ThreadRepositoryPostgres.name,
+        }
+      ]
+    }
+  }
 ]);
 
 module.exports = container;
