@@ -17,14 +17,14 @@ const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRep
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 
 // use case
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
+const AddUserUseCase = require('../Applications/use_case/users/AddUserUseCase');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
-const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
+const LoginUserUseCase = require('../Applications/use_case/users/LoginUserUseCase');
 const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
-const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
-const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
-const ThreadUseCase = require('../Applications/use_case/ThreadUseCase');
+const LogoutUserUseCase = require('../Applications/use_case/users/LogoutUserUseCase');
+const RefreshAuthenticationUseCase = require('../Applications/use_case/authentications/RefreshAuthenticationUseCase');
+const ThreadUseCase = require('../Applications/use_case/threads/ThreadUseCase');
 
 // creating container
 const container = createContainer();
