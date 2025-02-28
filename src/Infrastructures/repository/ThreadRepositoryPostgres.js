@@ -10,7 +10,7 @@ class ThreadRepositoryPostgres {
     const { title, body } = thread;
     const id = `thread-${this._idGenerator()}`;
     const query = {
-      text: 'INSERT INTO thread VALUES($1, $2, $3) RETURNING id, title, body',
+      text: 'INSERT INTO threads VALUES($1, $2, $3) RETURNING id, title, body',
       values: [id, title, body],
     }
 
