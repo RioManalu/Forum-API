@@ -1,6 +1,7 @@
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const pool = require('../../database/postgres/pool');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const AddedThread = require('../../../Domains/threads/entities/AddedThread');
 
 describe('ThreadRepositoryPostgres', () => {
   afterEach(async () => {
@@ -42,11 +43,11 @@ describe('ThreadRepositoryPostgres', () => {
       const addedThread = await threadRepositoryPostgres.addThread(thread);
 
       // Assert
-      expect(addedThread).toStrictEqual({
+      expect(addedThread).toStrictEqual(new AddedThread({
         id: 'thread-123',
         title: 'title thread',
         body: 'body thread',
-      });
+      }));
     });
   });
 });

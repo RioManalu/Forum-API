@@ -1,7 +1,10 @@
 const InvariantError = require("../../Commons/exceptions/InvariantError");
+const ThreadRepository = require('../../Domains/threads/ThreadRepository');
+const AddedThread = require('../../Domains/threads/entities/AddedThread');
 
-class ThreadRepositoryPostgres {
+class ThreadRepositoryPostgres extends ThreadRepository{
   constructor(pool, idGenerator) {
+    super()
     this._pool = pool;
     this._idGenerator = idGenerator;
   }
@@ -19,7 +22,7 @@ class ThreadRepositoryPostgres {
       throw new InvariantError('gagal menambahkan thread');
     }
 
-    return result.rows[0];
+    return new AddedThread(result.rows[0]);
   }
 }
 
