@@ -1,17 +1,15 @@
-const ThreadUseCase = require('../ThreadUseCase');
+const AddThreadUseCase = require('../AddThreadUseCase');
 
-describe('ThreadUseCase', () => {
-  describe('addThread', () => {  
-    // it('should orchestrating the addThread action correctly', async () => {
-    //   // Arrange
-    //   let useCasePayload = {
-    //     title: 'title',
-    //     body: 'body',
-    //   };
+describe('AddThreadUseCase', () => {
+  it('should orchestrating the addThread action correctly', async () => {
+    // Arrange
+    let useCasePayload = {
+      title: 'title',
+      body: 'body',
+    };
 
-    //   // Action
+    // Action
 
-    //   // Assert
-    // })
-  });
+    // Assert
+  })
 });
