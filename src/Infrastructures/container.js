@@ -15,6 +15,7 @@ const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
+const ThreadRepository = require('../Domains/threads/ThreadRepository');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/users/AddUserUseCase');
@@ -78,7 +79,7 @@ container.register([
       ],
     },
   },{
-    key: ThreadRepositoryPostgres.name,
+    key: ThreadRepository.name,
     Class: ThreadRepositoryPostgres,
     parameter: {
       dependencies: [
@@ -174,8 +175,8 @@ container.register([
       injectType: 'destructuring',
       dependencies: [
         {
-          name: 'threadRepositoryPostgres',
-          internal: ThreadRepositoryPostgres.name,
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
         }
       ]
     }
