@@ -1,4 +1,5 @@
 const InvariantError = require('./InvariantError');
+const AuthenticationError = require('../exceptions/AuthenticationError');
 
 const DomainErrorTranslator = {
   translate(error) {
@@ -19,6 +20,7 @@ DomainErrorTranslator._directories = {
   'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
   'THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan title dan body'),
   'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('title dan body harus string'),
+  'ADD_THREAD_USE_CASE.NOT_CONTAIN_AUTHORIZATION': new AuthenticationError('Missing authentication'),
 };
 
 module.exports = DomainErrorTranslator;
