@@ -14,14 +14,14 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
-    user_id: {
+    owner: {
       type: 'VARCHAR(50)',
       notNull: true,
     }
   });
 
-  // Menambahkan constraints Foreign key user_id reference ke user.id
-  pgm.addConstraint('threads','fk_threads.user_id_users.id', 'FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE');
+  // Menambahkan constraints Foreign key owner reference ke user.id
+  pgm.addConstraint('threads','fk_threads.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
 };
 
 exports.down = (pgm) => {

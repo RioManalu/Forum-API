@@ -10,8 +10,8 @@ class AddThreadUseCase {
     this._validateAuthorization(authorization);
     const token = this._authenticationTokenManager.removeBearer(authorization);
     await this._authenticationTokenManager.verifyAccessToken(token);
-    const { id : user_id } = await this._authenticationTokenManager.decodePayload(token);
-    const thread = new Thread({ ...useCasePayload, user_id });
+    const { id : owner } = await this._authenticationTokenManager.decodePayload(token);
+    const thread = new Thread({ ...useCasePayload, owner });
     return this._threadRepository.addThread(thread);
   }
 

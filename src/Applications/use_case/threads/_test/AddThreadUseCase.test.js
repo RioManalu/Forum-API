@@ -31,7 +31,7 @@ describe('AddThreadUseCase', () => {
       id: 'thread-123',
       title: useCasePayload.title,
       body: useCasePayload.body,
-      user_id: 'user-123',
+      owner: 'user-123',
     });
 
     const accessToken = 'accessToken';
@@ -46,7 +46,7 @@ describe('AddThreadUseCase', () => {
     mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
     .mockImplementation(() => Promise.resolve());
     mockAuthenticationTokenManager.decodePayload = jest.fn()
-    .mockImplementation(() => Promise.resolve({ username: 'username', id: mockAddedThread.user_id }));
+    .mockImplementation(() => Promise.resolve({ username: 'username', id: mockAddedThread.owner }));
     mockThreadRepository.addThread = jest.fn()
       .mockImplementation(() => Promise.resolve(mockAddedThread));
 
@@ -66,7 +66,7 @@ describe('AddThreadUseCase', () => {
       id: mockAddedThread.id,
       title: mockAddedThread.title,
       body: mockAddedThread.body,
-      user_id: mockAddedThread.user_id,
+      owner: mockAddedThread.owner,
     }));
 
       // assert value sent to parameter
@@ -76,7 +76,7 @@ describe('AddThreadUseCase', () => {
     expect(mockThreadRepository.addThread).toBeCalledWith(new Thread({
       title: useCasePayload.title,
       body: useCasePayload.body,
-      user_id: mockAddedThread.user_id,
+      owner: mockAddedThread.owner,
     }));
   });
 });

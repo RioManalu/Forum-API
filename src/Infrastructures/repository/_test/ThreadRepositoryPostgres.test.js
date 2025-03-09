@@ -23,13 +23,13 @@ describe('ThreadRepositoryPostgres', () => {
       const thread = {
         title: 'title thread',
         body: 'body thread',
-        user_id: 'user-123',
+        owner: 'user-123',
       }
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // make a user (dependency for fk_threads.user_id_users.id)
-      await UsersTableTestHelper.addUser({ username: thread.user_id });
+      await UsersTableTestHelper.addUser({ username: thread.owner });
   
       // Action
       await threadRepositoryPostgres.addThread(thread);
@@ -44,13 +44,13 @@ describe('ThreadRepositoryPostgres', () => {
       const thread = {
         title: 'title thread',
         body: 'body thread',
-        user_id: 'user-123',
+        owner: 'user-123',
       }
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
-      // make a user (dependency for fk_threads.user_id_users.id)
-      await UsersTableTestHelper.addUser({ username: thread.user_id });
+      // make a user (dependency for fk_threads.owner_users.id)
+      await UsersTableTestHelper.addUser({ username: thread.owner });
   
       // Action
       const addedThread = await threadRepositoryPostgres.addThread(thread);
@@ -60,7 +60,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-123',
         title: thread.title,
         body: thread.body,
-        user_id: thread.user_id,
+        owner: thread.owner,
       }));
     });
   });
