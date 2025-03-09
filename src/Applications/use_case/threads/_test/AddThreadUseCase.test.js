@@ -41,14 +41,14 @@ describe('AddThreadUseCase', () => {
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
     // mocking needed function
+    mockAuthenticationTokenManager.removeBearer = jest.fn()
+    .mockReturnValue(accessToken);
+    mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
+    .mockImplementation(() => Promise.resolve());
+    mockAuthenticationTokenManager.decodePayload = jest.fn()
+    .mockImplementation(() => Promise.resolve({ username: 'username', id: mockAddedThread.user_id }));
     mockThreadRepository.addThread = jest.fn()
       .mockImplementation(() => Promise.resolve(mockAddedThread));
-    mockAuthenticationTokenManager.removeBearer = jest.fn()
-      .mockReturnValue(accessToken);
-    mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockAuthenticationTokenManager.decodePayload = jest.fn()
-      .mockImplementation(() => Promise.resolve({ username: 'username', id: mockAddedThread.user_id }));
 
     // create use case instance
     const addThreadUseCase = new AddThreadUseCase({
