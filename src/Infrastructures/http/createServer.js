@@ -4,6 +4,7 @@ const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTrans
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
+const Jwt = require('@hapi/jwt')
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -11,6 +12,33 @@ const createServer = async (container) => {
     port: process.env.PORT,
   });
 
+  // mendefinisikan plugin ekstersnal
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+
+  // mendefinisikan strategi autentikasi jwt
+  server.auth.strategy('forumapp_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
+  });
+
+
+  // mendefinisikan plugin internal
   await server.register([
     {
       plugin: users,

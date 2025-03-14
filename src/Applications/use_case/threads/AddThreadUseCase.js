@@ -1,24 +1,13 @@
 const Thread = require('../../../Domains/threads/entities/Thread');
 
 class AddThreadUseCase {
-  constructor({ threadRepository, authenticationTokenManager }) {
+  constructor({ threadRepository }) {
     this._threadRepository = threadRepository;
-    this._authenticationTokenManager = authenticationTokenManager;
   }
 
-  async execute(useCasePayload, authorization) {
-    this._validateAuthorization(authorization);
-    const token = this._authenticationTokenManager.removeBearer(authorization);
-    await this._authenticationTokenManager.verifyAccessToken(token);
-    const { id : owner } = await this._authenticationTokenManager.decodePayload(token);
+  async execute(useCasePayload, owner) {
     const thread = new Thread({ ...useCasePayload, owner });
     return this._threadRepository.addThread(thread);
-  }
-
-  _validateAuthorization(authorization) {
-    if(!authorization) {
-      throw new Error('ADD_THREAD_USE_CASE.NOT_CONTAIN_AUTHORIZATION');
-    }
   }
 }
 
