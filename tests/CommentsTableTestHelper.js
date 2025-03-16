@@ -3,7 +3,7 @@ const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const CommentsTestTableTestHelper = {
   async addComment({
-    id = 'comment-123', content = 'content', threads_id = 'threads-123', owner = 'users-123',
+    id = 'comment-123', content = 'content', threads_id = 'thread-123', owner = 'user-123',
   }) {
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3, $4)',
@@ -20,6 +20,7 @@ const CommentsTestTableTestHelper = {
     };
 
     const result = await pool.query(query);
+    // [0] di tujuan untuk mengambil nilai tertentu
     return result.rows;
   },
 

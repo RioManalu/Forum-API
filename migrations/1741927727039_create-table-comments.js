@@ -20,6 +20,11 @@ exports.up = pgm => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    is_delete: {
+      type: 'BOOLEAN',
+      notNull: true,
+      default: false,
+    }
   });
 
   // Menambahkan constraints Foreign key threads_id reference ke threads.id
