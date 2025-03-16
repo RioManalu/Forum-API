@@ -2,7 +2,6 @@ const AddThreadUseCase = require('../AddThreadUseCase');
 const Thread = require('../../../../Domains/threads/entities/Thread');
 const AddedThread = require('../../../../Domains/threads/entities/AddedThread');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
-const AuthenticationTokenManager = require('../../../security/AuthenticationTokenManager');
 
 describe('AddThreadUseCase', () => {
   it('should orchestrating the addThread action correctly', async () => {
@@ -36,7 +35,7 @@ describe('AddThreadUseCase', () => {
 
     // Assert
 
-      // assert addThread use case
+      // assert addedThread use case
     expect(addedThread).toStrictEqual(new AddedThread({
       id: mockAddedThread.id,
       title: mockAddedThread.title,
