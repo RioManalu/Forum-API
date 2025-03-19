@@ -145,6 +145,19 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('deleteCommentById function', () => {
+    it('should throw NotFoundError when comment not found', async () => {
+      // Arrange
+      const payload = {
+        commentId: 'comment-123',
+      };
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.deleteCommentById(payload.commentId))
+        .rejects
+        .toThrow(NotFoundError);
+    })
     it('should change is_delete in comments table to be true', async () => {
       // Arrange
       const payload = {
