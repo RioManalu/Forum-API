@@ -14,10 +14,14 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
+    date: {
+      type: 'DATE',
+      notNull: true,
+    },
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
-    }
+    },
   });
 
   // Menambahkan constraints Foreign key owner reference ke user.id

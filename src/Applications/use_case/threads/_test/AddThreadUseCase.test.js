@@ -14,7 +14,6 @@ describe('AddThreadUseCase', () => {
     const mockAddedThread = new AddedThread({
       id: 'thread-123',
       title: useCasePayload.title,
-      body: useCasePayload.body,
       owner: 'user-123',
     });
 
@@ -39,7 +38,6 @@ describe('AddThreadUseCase', () => {
     expect(addedThread).toStrictEqual(new AddedThread({
       id: mockAddedThread.id,
       title: mockAddedThread.title,
-      body: mockAddedThread.body,
       owner: mockAddedThread.owner,
     }));
 
