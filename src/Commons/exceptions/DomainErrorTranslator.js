@@ -25,6 +25,8 @@ DomainErrorTranslator._directories = {
   'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
   'REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan lengkap'),
   'REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
+  'DELETE_REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan lengkap'),
+  'DELETE_REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
 };
 
 module.exports = DomainErrorTranslator;

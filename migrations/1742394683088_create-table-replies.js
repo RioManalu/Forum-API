@@ -12,6 +12,10 @@ exports.up = pgm => {
       type: 'TEXT',
       notNull: true,
     },
+    date: {
+      type: 'DATE',
+      notNull: true,
+    },
     owner: {
       type: 'VARCHAR(50)',
       notNull: true,
@@ -23,6 +27,11 @@ exports.up = pgm => {
     comment_id: {
       type: 'VARCHAR(50)',
       notNull: true,
+    },
+    is_delete: {
+      type: 'BOOLEAN',
+      notNull: true,
+      default: false,
     },
   });
 

@@ -5,6 +5,8 @@ const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper
 const CommentsTestTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 const AddedReply = require('../../../Domains/replies/entities/AddedReply');
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('ReplyRepositoryPostgres', () => {
   afterEach(async () => {
@@ -81,6 +83,66 @@ describe('ReplyRepositoryPostgres', () => {
         content: reply.content,
         owner: reply.owner,
       }));
+    });
+  });
+
+  describe('verifyReplyOwner', () => {
+    it('should throw NotFoundError when reply is not found', async () => {
+      // Arrange
+      const reply = {
+        id: 'reply-',
+        owner: 'user-123',
+      };
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(replyRepositoryPostgres.verifyReplyOwner(reply.id, reply.owner))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('should throw AuthorizationError when owner is not verified', async () => {
+      // Arrange
+      const reply = {
+        id: 'reply-123',
+        owner: 'user-234',
+      };
+
+      await UsersTableTestHelper.addUser({});
+
+      await ThreadsTableTestHelper.addThread({});
+
+      await CommentsTestTableTestHelper.addComment({});
+
+      await RepliesTableTestHelper.addReply({});
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(replyRepositoryPostgres.verifyReplyOwner(reply.id, reply.owner))
+        .rejects.toThrowError(AuthorizationError);
+    });
+
+    it('should not throw NotFoundError and AuthorizationError when payload is correct', async () => {
+      // Arrange
+      const reply = {
+        id: 'reply-123',
+        owner: 'user-123',
+      };
+
+      await UsersTableTestHelper.addUser({});
+
+      await ThreadsTableTestHelper.addThread({});
+
+      await CommentsTestTableTestHelper.addComment({});
+
+      await RepliesTableTestHelper.addReply({});
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(replyRepositoryPostgres.verifyReplyOwner(reply.id, reply.owner))
+        .resolves.not.toThrowError(AuthorizationError);
     });
   });
 });
