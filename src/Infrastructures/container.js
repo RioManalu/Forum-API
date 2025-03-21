@@ -18,6 +18,8 @@ const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres'
 const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const CommentRepository = require('../Domains/comments/CommentRepository');
 const CommentRepositoryPostgres = require('../Infrastructures/repository/CommentRepositoryPostgres');
+const ReplyRepository = require('../Domains/replies/ReplyRepository');
+const ReplyRepositoryPostgres = require('../Infrastructures/repository/ReplyRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/users/AddUserUseCase');
@@ -31,6 +33,7 @@ const AddThreadUseCase = require('../Applications/use_case/threads/AddThreadUseC
 const AddCommentUseCase = require('../Applications/use_case/comments/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/comments/DeleteCommentUseCase');
 const GetDetailThreadUseCase = require('../Applications/use_case/threads/GetDetailThreadUseCase');
+const AddReplyUseCase = require('../Applications/use_case/replies/AddReplyUseCase');
 
 // creating container
 const container = createContainer();
@@ -99,6 +102,19 @@ container.register([
   },{
     key: CommentRepository.name,
     Class: CommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },{
+    key: ReplyRepository.name,
+    Class: ReplyRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -242,6 +258,26 @@ container.register([
           internal: ThreadRepository.name,
         },
       ]
+    }
+  },{
+    key: AddReplyUseCase.name,
+    Class: AddReplyUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'replyRepository',
+          internal: ReplyRepository.name,
+        },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+      ],
     }
   },
 ]);

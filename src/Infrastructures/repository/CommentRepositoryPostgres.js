@@ -23,6 +23,19 @@ class CommentRepositoryPostgres extends CommentRepository {
     return new AddedComment(result.rows[0]);
   }
 
+  async getCommentById(id) {
+    const query = {
+      text: 'SELECT content FROM comments WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+    if(!result.rows.length) {
+      throw new NotFoundError('comment tidak ditemukan');
+    }
+    return result.rows[0];
+  }
+
   async verifyCommentOwner(id, owner) {
     const query = {
       text: 'SELECT owner FROM comments WHERE id = $1',

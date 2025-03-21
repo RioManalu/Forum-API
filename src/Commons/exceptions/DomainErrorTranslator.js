@@ -19,10 +19,12 @@ DomainErrorTranslator._directories = {
   'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
   'THREAD.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan title dan body'),
   'THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('title dan body harus string'),
-  'COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan benar'),
+  'COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan lengkap'),
   'COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
-  'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan benar'),
+  'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan lengkap'),
   'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
+  'REPLY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('harus mengirimkan payload dengan lengkap'),
+  'REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('harus mengirimkan payload dengan tipe data yang benar'),
 };
 
 module.exports = DomainErrorTranslator;
