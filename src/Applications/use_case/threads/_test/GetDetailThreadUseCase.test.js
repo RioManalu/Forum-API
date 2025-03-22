@@ -1,3 +1,4 @@
+const ReplyRepository = require('../../../../Domains/replies/ReplyRepository');
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const GetDetailThreadUseCase = require('../GetDetailThreadUseCase');
 
@@ -8,6 +9,13 @@ describe('GetDetailThreadUseCase', () => {
     };
 
     const newDate = new Date();
+
+    const mockReplies = {
+      id: 'reply-123',
+      content: 'content',
+      date: newDate,
+      username: 'dicoding',
+    }
 
     const mockDetailThread = {
       id: 'thread-123',
@@ -21,19 +29,24 @@ describe('GetDetailThreadUseCase', () => {
           username: 'dicoding',
           date: newDate,
           content: 'content',
+          replies: [mockReplies]
         },
       ],
     };
 
     // prepare repo class
     const mockThreadRepository = new ThreadRepository();
+    const mockReplyRepository = new ReplyRepository();
 
     // prepare repo function
     mockThreadRepository.getDetailThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailThread));
+    mockReplyRepository.getRepliesFromComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(mockReplies));
 
     const getDetailThreadUseCase = new GetDetailThreadUseCase({
       threadRepository: mockThreadRepository,
+      replyRepository: mockReplyRepository,
     });
 
     // Action
@@ -53,5 +66,6 @@ describe('GetDetailThreadUseCase', () => {
     });
 
     expect(mockThreadRepository.getDetailThreadById).toHaveBeenCalledWith(payload.threadId);
+    expect(mockReplyRepository.getRepliesFromComment).toHaveBeenCalledWith(mockDetailThread.comments[0].id);
   });
 });

@@ -10,6 +10,10 @@ class ReplyRepository {
   async deleteReplyById(id) {
     throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async getRepliesFromComment(comment_id) {
+    throw new Error('REPLY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = ReplyRepository;

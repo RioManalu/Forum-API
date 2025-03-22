@@ -145,4 +145,39 @@ describe('ReplyRepositoryPostgres', () => {
         .resolves.not.toThrowError(AuthorizationError);
     });
   });
+
+  describe('getRepliesFromComment', () => {
+    it('should return detail thread correctly', async () => {
+      // Arrange
+      const payload = {
+        comment_id: 'comment-123',
+      };
+
+      const mockReplies = {
+        id: 'reply-123',
+        content: 'content',
+        date: new Date(),
+        username: 'dicoding',
+      };
+
+      await UsersTableTestHelper.addUser({});
+
+      await ThreadsTableTestHelper.addThread({});
+
+      await CommentsTestTableTestHelper.addComment({});
+
+      await RepliesTableTestHelper.addReply({});
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesFromComment(payload.comment_id);
+
+      // Assert
+      expect(replies[0].id).toBe(mockReplies.id);
+      expect(replies[0].content).toBe(mockReplies.content);
+      expect(replies[0].date).toEqual(new Date(replies[0].date));
+      expect(replies[0].username).toBe(mockReplies.username);
+    });
+  });
 });
