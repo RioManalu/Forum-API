@@ -52,7 +52,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     const query = {
       text: `SELECT replies.id, replies.content, replies.date, users.username,
       CASE
-        WHEN replies.is_delete = TRUE THEN '**balasan telah dihapus'
+        WHEN replies.is_delete = TRUE THEN '**balasan telah dihapus**'
         ELSE replies.content
       END
       FROM replies
