@@ -1,0 +1,1423 @@
+{
+    "openapi":"3.1.1",
+    "info": {
+      "title":"Forumapp Restful API",
+      "version":"1.0",
+      "description": "OpenAPI for Forumapp Restful API",
+      "contact": {
+        "name": "Rio Hanson Manalu",
+        "email": "riohansonmanalu16@gmail.com"
+      },
+      "license": {
+        "name": "APACHE 2.0",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "servers": [
+      {
+        "description": "Forumapp Restful API Server",
+        "url":"http://{environment}:5000",
+        "variables": {
+          "environment": {
+            "description": "Server Environment",
+            "default": "localhost",
+            "enum": [
+              "localhost",
+              "dev",
+              "qa",
+              "prod"
+            ]
+          }
+        }
+      }
+    ],
+    "paths": {
+      "/users": {
+        "post": {
+          "tags": ["Users"],
+          "summary": "Create new user",
+          "description": "Create new user to database",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "password", "fullname"],
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "maxLength": 50
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "fullname": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "rio": {
+                    "description": "Example create user rio",
+                    "value": {
+                      "username": "rio",
+                      "password": "secret123",
+                      "fullname": "riohanson"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "success create new user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "addedUser": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "fullname": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "succes": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "addedUser": {
+                            "id": "user-123",
+                            "username": "rio",
+                            "fullname": "riohanson"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid given payload",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-bad_payload": {
+                      "value": {
+                        "status": "fail",
+                        "message": "properti yang dibutuhkan tidak ada"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/authentications": {
+        "post": {
+          "tags": ["Authentications"],
+          "summary": "login user",
+          "description": "Create new access token and refresh token",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["username", "password"],
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "rio": {
+                    "description": "login user rio",
+                    "value": {
+                      "username": "rio",
+                      "password": "secret123"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "succes login user",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "accesToken": {
+                            "type": "string"
+                          },
+                          "refreshToken": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "description": "success login to user",
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "accessToken": "eyiohdgsohsog",
+                          "refreshToken": "eyohgsihooshfg"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid given payload",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-bad_payload": {
+                      "value": {
+                        "status": "fail",
+                        "message": "username tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "invalid credential",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_password": {
+                      "value": {
+                        "status": "fail",
+                        "message": "kredensial yang anda masukkan salah"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": ["Authentications"],
+          "summary": "Update existing access token",
+          "description": "Update existing access token using refreshToken in database",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["refreshToken"],
+                  "properties": {
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "success update accessToken",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "accesToken": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "accessToken": "eyaosghssh"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid refreshToken",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_refreshToken": {
+                      "value": {
+                        "status": "fail",
+                        "message": "refresh token tidak valid"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": ["Authentications"],
+          "summary": "logout user",
+          "description": "Delete existing refresh token",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["true"],
+                  "properties": {
+                    "refreshToken": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "success delete existing refresh token",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid refreshToken",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "staus": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_refreshToken": {
+                      "value": {
+                        "status": "fail",
+                        "message": "refresh token tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/threads": {
+        "post": {
+          "tags": ["Threads"],
+          "summary": "Create new thread",
+          "description": "Create new thread to database",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["title, body"],
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "newThread": {
+                    "description": "create new example thread",
+                    "value": {
+                      "title": "example title",
+                      "body": "example body"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "success create new thread",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "addedThread": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "owner": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "addedThread": {
+                            "id": "thread-123",
+                            "title": "thread title",
+                            "owner": "user-123"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid given payload",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-bad_payload": {
+                      "value": {
+                        "status": "fail",
+                        "message": "harus mengirimkan title dan body"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "invalid credential",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "statusCode": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-no_authentication": {
+                      "value": {
+                        "statusCode": 401,
+                        "error": "Unauthorized",
+                        "message": "Missing authentication"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "forumAuth": []
+            }
+          ]
+        }
+      },
+      "/threads/{threadId}": {
+        "get": {
+          "tags": ["Threads"],
+          "summary": "Get detail thread",
+          "description": "Get detail thread with comments and replies",
+          "parameters": [
+            {
+              "name": "threadId",
+              "in": "path",
+              "required": true,
+              "description": "thread id for get detail thread by id",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "threadId 1": {
+                  "description": "get detail thread 1 by id",
+                  "value": "thread-123"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "success get detail thread",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "thread": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "body": {
+                                "type": "string"
+                              },
+                              "date": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "comments": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    },
+                                    "username": {
+                                      "type": "string"
+                                    },
+                                    "date": {
+                                      "type": "string"
+                                    },
+                                    "content": {
+                                      "type": "string"
+                                    },
+                                    "replies": {
+                                      "type": "array",
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "content": {
+                                            "type": "string"
+                                          },
+                                          "date": {
+                                            "type": "string"
+                                          },
+                                          "username": {
+                                            "type": "string"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "thread": {
+                            "id": "thread-123",
+                            "title": "thread title",
+                            "body": "thread body",
+                            "date": "2025-03-23T11:02:28.522Z",
+                            "username": "rio",
+                            "comments": [
+                              {
+                                "id": "comment-123",
+                                "username": "rio",
+                                "date": "2025-03-23T11:02:28.522Z",
+                                "replies": {
+                                  "id": "reply",
+                                  "content": "reply content",
+                                  "date": "2025-03-23T11:02:28.522Z",
+                                  "username": "rio"
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "invalid path parameter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_threadId": {
+                      "value": {
+                        "status": "fail",
+                        "message": "thread tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/threads/{threadId}/comments": {
+        "post": {
+          "tags": ["Comments"],
+          "summary": "Create new comment",
+          "description": "Create new comment to database",
+          "parameters": [
+            {
+              "name": "threadId",
+              "in": "path",
+              "required": true,
+              "description": "thread id for create new comment to thread",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "threadId 1": {
+                  "description": "create new comment to threadId 1",
+                  "value": "thread-123"
+                }
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["content"],
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "reply 1": {
+                    "description": "create new reply 1",
+                    "value": {
+                      "content": "new content"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "success create new comment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "addedComment": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "owner": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "addedComment": {
+                            "id": "comment-123",
+                            "content": "new content",
+                            "owner": "user-123"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid given payload",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-bad_payload": {
+                      "value": {
+                        "status": "fail",
+                        "message": "harus mengirimkan payload dengan lengkap"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "invalid credential",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "statusCode": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-no_authentication": {
+                      "value": {
+                        "statusCode": 401,
+                        "error": "Unauthorized",
+                        "message": "Missing authentication"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "invalid path parameter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_threadId": {
+                      "value": {
+                        "status": "fail",
+                        "message": "thread tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "forumAuth": []
+            }
+          ]
+        }
+      },
+      "/threads/{threadId}/comments/{commentId}": {
+        "delete": {
+          "tags": ["Comments"],
+          "summary": "Delete existing comment",
+          "description": "Delete existing comment in database",
+          "parameters": [
+            {
+              "name": "threadId",
+              "in": "path",
+              "required": true,
+              "description": "thread id for get thread by id",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "threadId 1": {
+                  "description": "get thread 1 by id",
+                  "value": "thread-123"
+                }
+              }
+            },
+            {
+              "name": "commentId",
+              "in": "path",
+              "required": true,
+              "description": "comment id for delete comment by id inside a thread",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "commentId 1": {
+                  "description": "delete comment 1 by id",
+                  "value": "comment-123"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "success delete existing comment",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "invalid credential",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "statusCode": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-no_authentication": {
+                      "value": {
+                        "statusCode": 401,
+                        "error": "Unauthorized",
+                        "message": "Missing authentication"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Authorization error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-access_denied": {
+                      "value": {
+                        "status": "fail",
+                        "message": "Akses ditolak"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "invalid parameter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_commentId": {
+                      "value": {
+                        "status": "fail",
+                        "message": "comment tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "forumAuth": []
+            }
+          ]
+        }
+      },
+      "/threads/{threadId}/comments/{commentId}/replies": {
+        "post": {
+          "tags": ["Replies"],
+          "summary": "Create new reply",
+          "description": "Create new reply to database",
+          "parameters": [
+            {
+              "name": "threadId",
+              "in": "path",
+              "required": true,
+              "description": "thread id for get thread by id",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "threadId 1": {
+                  "description": "get thread 1 by id",
+                  "value": "thread-123"
+                }
+              }
+            },
+            {
+              "name": "commentId",
+              "in": "path",
+              "required": true,
+              "description": "comment id for post new reply inside a comment and thread",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "commentId 1": {
+                  "description": "get reply 1 by id",
+                  "value": "reply-123"
+                }
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["content"],
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "reply 1": {
+                    "description": "create new reply 1",
+                    "value": {
+                      "content": "new content"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "success create new reply",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "object",
+                        "properties": {
+                          "addedReply": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "owner": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success",
+                        "data": {
+                          "addedReply": {
+                            "id": "reply-123",
+                            "content": "new reply",
+                            "owner": "user-123"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid given value",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-bad_payload": {
+                      "value": {
+                        "status": "fail",
+                        "message": "harus mengirimkan payload dengan lengkap"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "invalid credential",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "statusCode": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "error": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-no_authentication": {
+                      "value": {
+                        "statusCode": 401,
+                        "error": "Unauthorized",
+                        "message": "Missing authentication"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Invalid path parameter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_threadId": {
+                      "value": {
+                        "status": "fail",
+                        "message": "thread tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "forumAuth": []
+            }
+          ]
+        }
+      },
+      "/threads/{threadId}/comments/{commentId}/replies/{replyId}": {
+        "delete": {
+          "tags": ["Replies"],
+          "summary": "Delete existing reply",
+          "description": "Delete existing reply in database",
+          "parameters": [
+            {
+              "name": "threadId",
+              "in": "path",
+              "required": true,
+              "description": "thread id for get thread by id",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "threadId 1": {
+                  "description": "get thread 1 by id",
+                  "value": "thread-123"
+                }
+              }
+            },
+            {
+              "name": "commentId",
+              "in": "path",
+              "required": true,
+              "description": "comment id for get comment by id",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "commentId 1": {
+                  "description": "get comment 1 by id",
+                  "value": "comment-123"
+                }
+              }
+            },
+            {
+              "name": "replyId",
+              "in": "path",
+              "required": true,
+              "description": "reply id for delete reply by id inside a comment and thread",
+              "schema": {
+                "type": "string"
+              },
+              "examples": {
+                "replyId 1": {
+                  "description": "delete replyId 1 by id",
+                  "value": "reply-123"
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "success delete existing reply",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "success": {
+                      "value": {
+                        "status": "success"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "403": {
+              "description": "Authorization error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-access_denied": {
+                      "value": {
+                        "status": "fail",
+                        "message": "Akses ditolak"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "invalid parameter",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "examples": {
+                    "fail-invalid_replyId": {
+                      "value": {
+                        "status": "fail",
+                        "message": "reply tidak ditemukan"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "security": [
+            {
+              "forumAuth": []
+            }
+          ]
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "forumAuth": {
+          "description": "Authentication for forum RESTful API",
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      }
+    }
+  }
